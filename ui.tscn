@@ -1,0 +1,116 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpliyndwxtv73"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_tgyso"]
+[ext_resource type="PackedScene" uid="uid://bushidrwetaov" path="res://world.tscn" id="2_gy01k"]
+
+[node name="UI" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tgyso")
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.5
+offset_top = -23.0
+offset_right = 30.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Score: 0"
+
+[node name="PausedLabel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_right = 50.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="GameOver" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -30.0
+offset_right = 100.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Message" type="Label" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -31.0
+offset_right = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Retry"
+
+[node name="ReturnToPlayLabel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.5
+offset_top = -11.5
+offset_right = 78.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Return To Play Area!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="World" parent="." instance=ExtResource("2_gy01k")]
+
+[connection signal="pressed" from="GameOver/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="game_over" from="World" to="." method="_on_world_game_over"]
+[connection signal="left_world" from="World" to="." method="_on_world_left_world"]
+[connection signal="reentered_world" from="World" to="." method="_on_world_reentered_world"]
+[connection signal="score_point" from="World" to="." method="_on_world_score_point"]

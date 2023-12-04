@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://cvsthawty8use"]
+
+[ext_resource type="Script" path="res://food.gd" id="1_1xivk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b5yvm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06tgj"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_nnujx"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_06tgj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mgmab"]
+resource_local_to_scene = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_i3d1q"]
+material = SubResource("StandardMaterial3D_mgmab")
+
+[node name="Area3D" type="Area3D" groups=["food"]]
+script = ExtResource("1_1xivk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_b5yvm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("BoxMesh_nnujx")
+
+[node name="ShadowMeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 3
+mesh = SubResource("BoxMesh_i3d1q")

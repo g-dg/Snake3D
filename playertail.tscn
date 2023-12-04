@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bwa2g74j3lko4"]
+
+[ext_resource type="Script" path="res://playertail.gd" id="1_n4757"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h3lye"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_or6r4"]
+resource_local_to_scene = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ff6l"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_or6r4")
+
+[node name="Area3D" type="Area3D" groups=["playertail"]]
+script = ExtResource("1_n4757")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_h3lye")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_6ff6l")

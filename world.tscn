@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://bushidrwetaov"]
+
+[ext_resource type="PackedScene" uid="uid://c28larc2fxogl" path="res://player.tscn" id="1_1hntu"]
+[ext_resource type="Script" path="res://world.gd" id="1_tgugv"]
+[ext_resource type="PackedScene" uid="uid://cvsthawty8use" path="res://food.tscn" id="2_0jywq"]
+[ext_resource type="PackedScene" uid="uid://bwa2g74j3lko4" path="res://playertail.tscn" id="3_dvpbf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0mhmx"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_t2oyj"]
+sky_material = SubResource("ProceduralSkyMaterial_0mhmx")
+
+[sub_resource type="Environment" id="Environment_imip7"]
+background_mode = 2
+sky = SubResource("Sky_t2oyj")
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d5vn0"]
+size = Vector3(1000, 1000, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_icspu"]
+size = Vector3(1000, 1000, 1000)
+
+[node name="World" type="Node3D"]
+process_mode = 1
+script = ExtResource("1_tgugv")
+food_scene = ExtResource("2_0jywq")
+tail_scene = ExtResource("3_dvpbf")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_imip7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_1hntu")]
+
+[node name="AdvanceTailTimer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.1
+autostart = true
+
+[node name="SoftWorldBoundary" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SoftWorldBoundary"]
+shape = SubResource("BoxShape3D_d5vn0")
+
+[node name="HardWorldBoundary" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HardWorldBoundary"]
+shape = SubResource("BoxShape3D_icspu")
+
+[connection signal="food_eaten" from="Player" to="." method="_on_player_food_eaten"]
+[connection signal="hit_tail" from="Player" to="." method="_on_player_hit_tail"]
+[connection signal="timeout" from="AdvanceTailTimer" to="." method="_on_advance_tail_timer_timeout"]
+[connection signal="area_entered" from="SoftWorldBoundary" to="." method="_on_soft_world_boundary_area_entered"]
+[connection signal="area_exited" from="SoftWorldBoundary" to="." method="_on_soft_world_boundary_area_exited"]
+[connection signal="area_exited" from="HardWorldBoundary" to="." method="_on_hard_world_boundary_area_exited"]
