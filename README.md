@@ -12,3 +12,4 @@ Controls:
 - Esc: pause/resume
 - Q/E: rotate camera
 - Has controller support
+- Does not have touch or gyro support yet
