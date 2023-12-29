@@ -18,6 +18,14 @@ func _process(_delta):
 		$PausedLabel.visible = game_paused
 
 
+func _input(event):
+	if $GameOver.visible:
+		if event.is_action("ui_accept"):
+			new_game()
+		if event.is_action("ui_cancel"):
+			get_tree().quit()
+
+
 func new_game():
 	set_score(0)
 	$GameOver.visible = false
