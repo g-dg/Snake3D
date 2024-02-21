@@ -1,39 +1,40 @@
+class_name Player
 extends Area3D
 
-@export var movement_speed = 10
-@export var rotate_speed = PI / 2
+@export var movement_speed: float = 10.0
+@export var rotate_speed: float = PI / 2
 
 signal food_eaten
 signal hit_tail
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(delta: float) -> void:
 	input_frame(delta)
 
-func _input(event):
+func _input(event: InputEvent) -> void:
 	input_event(event)
 
-var touch_input_origin = null
-var touch_drag_vector = Vector2(0, 0)
+var touch_input_origin: Vector2 = Vector2.ZERO
+var touch_drag_vector: Vector2 = Vector2.ZERO
 
-func input_event(event):
+func input_event(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
-		if event.pressed:
+		if (event as InputEventScreenTouch).pressed:
 			# touch start
-			touch_input_origin = event.position
+			touch_input_origin = (event as InputEventScreenTouch).position
 		else:
 			# touch end
-			touch_input_origin = null
-			touch_drag_vector = Vector2(0, 0)
+			touch_input_origin = Vector2.ZERO
+			touch_drag_vector = Vector2.ZERO
 	if event is InputEventScreenDrag:
-		touch_drag_vector = (event.position - touch_input_origin).normalized()
+		touch_drag_vector = ((event as InputEventScreenDrag).position - touch_input_origin).normalized()
 
-func input_frame(delta):
-	var input = Vector3(0, 0, 0)
+func input_frame(delta: float) -> void:
+	var input: Vector3 = Vector3.ZERO
 	input.y += touch_drag_vector.x;
 	input.x += touch_drag_vector.y;
 	if Input.is_action_pressed("up"):
@@ -55,9 +56,9 @@ func input_frame(delta):
 	transform = transform.orthonormalized()
 	position += -transform.basis.z.normalized() * movement_speed * delta
 
-func _on_area_entered(area):
+func _on_area_entered(area: Area3D) -> void:
 	if area.is_in_group("food"):
-		food_eaten.emit(area.color)
+		food_eaten.emit((area as Food).color)
 		area.queue_free()
 	if area.is_in_group("playertail"):
 		hit_tail.emit()
